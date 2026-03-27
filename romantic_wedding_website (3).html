@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boussis Bridal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body {margin:0;font-family:'Poppins',sans-serif;background:linear-gradient(to bottom,#fdf0f5,#ffffff);color:#333;}
+header{text-align:center;padding:40px;}
+header h1{font-size:3em;color:#c48b9f;}
+nav{display:flex;justify-content:center;gap:20px;margin-bottom:30px;}
+nav a{text-decoration:none;color:#555;font-weight:500;}
+section{padding:50px 20px;text-align:center;}
+.card{background:white;padding:20px;margin:15px;border-radius:20px;box-shadow:0 5px 15px rgba(0,0,0,0.1);display:inline-block;width:260px;}
+.card img{border-radius:15px;width:100%;height:300px;object-fit:cover;}
+.btn{padding:10px 20px;border:none;border-radius:20px;background:#c48b9f;color:white;cursor:pointer;}
+footer{text-align:center;padding:30px;background:#f7dbe6;}
+.social a{display:block;margin:5px;color:#c48b9f;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Boussis Bridal</h1>
+  <p>Luxury Wedding Dresses | بوسيس للعرائس</p>
+</header>
+
+<nav>
+  <a href="#collection">Collection</a>
+  <a href="#gallery">Real Dresses</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#booking">Booking</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<section id="collection">
+  <h2>Dress Collection | مجموعة الفساتين</h2>
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1529636798458-92182e662485">
+    <p>Elegant Lace Dress</p>
+    <p>30,000 دج</p>
+  </div>
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1519741497674-611481863552">
+    <p>Princess Dress</p>
+    <p>45,000 دج</p>
+  </div>
+</section>
+
+<section id="gallery">
+  <h2>Real Dresses From Shop | فساتين من المحل</h2>
+
+  <div class="card">
+    <img src="IMG_1441.jpeg">
+    <p>Evening Dress</p>
+    <p>4,000 دج</p>
+  </div>
+
+  <div class="card">
+    <img src="IMG_2535.jpeg">
+    <p>Luxury Red Dress</p>
+    <p>12,000 دج</p>
+  </div>
+
+  <div class="card">
+    <img src="IMG_2532.jpeg">
+    <p>Elegant Black & Gold</p>
+    <p>20,000 دج</p>
+  </div>
+
+</section>
+
+<section id="pricing">
+  <h2>Pricing | الأسعار</h2>
+  <p>From 4,000 دج to 20,000 دج حسب الفستان</p>
+</section>
+
+<section id="booking">
+  <h2>Book Appointment | حجز موعد</h2>
+  <input type="text" placeholder="Your Name">
+  <br><br>
+  <input type="date">
+  <br><br>
+  <button class="btn">Book Now</button>
+</section>
+
+<section id="contact">
+  <h2>Contact & Location | الاتصال</h2>
+  <p>📍 Jijel, Algeria</p>
+  <p>📞 0556961348</p>
+  <div class="social">
+    <a href="#">Instagram: boussis pour les marier</a>
+    <a href="#">Facebook: بوسيس للعرائس</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Boussis Bridal</p>
+</footer>
+
+
+
+<!-- AI Assistant Chat -->
+<div id="chatbot" style="position:fixed;bottom:20px;right:20px;width:300px;background:white;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.2);overflow:hidden;font-size:14px;">
+  <div style="background:#c48b9f;color:white;padding:10px;">💬 Assistant</div>
+  <div id="chatbox" style="height:200px;overflow-y:auto;padding:10px;"></div>
+  <input id="userInput" type="text" placeholder="Ask about dresses..." style="width:70%;padding:5px;border:none;border-top:1px solid #eee;">
+  <button onclick="sendMessage()" style="width:30%;border:none;background:#c48b9f;color:white;">Send</button>
+</div>
+
+<script>
+// ⚠️ Replace with your OpenAI API key
+const API_KEY = "YOUR_API_KEY_HERE";
+
+async function sendMessage() {
+  let input = document.getElementById("userInput");
+  let chatbox = document.getElementById("chatbox");
+
+  let userText = input.value;
+  if(userText === "") return;
+
+  chatbox.innerHTML += `<p><b>You:</b> ${userText}</p>`;
+
+  input.value = "";
+
+  // Call real AI
+  try {
+    let response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + API_KEY
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {role: "system", content: "You are a helpful assistant for a wedding dress shop in Jijel, Algeria. Answer briefly about dresses, prices (4000-20000 DZD), booking, and contact 0556961348."},
+          {role: "user", content: userText}
+        ]
+      })
+    });
+
+    let data = await response.json();
+    let reply = data.choices[0].message.content;
+
+    chatbox.innerHTML += `<p><b>Assistant:</b> ${reply}</p>`;
+    chatbox.scrollTop = chatbox.scrollHeight;
+
+  } catch (error) {
+    chatbox.innerHTML += `<p><b>Assistant:</b> Error connecting to AI.</p>`;
+  }
+}
+</script>
+
+</body>
+</html>
